@@ -1,0 +1,78 @@
+<core:FragmentDefinition
+ xmlns="sap.m"
+	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core"
+>
+    <Dialog
+        id="helloDialog"
+        title="Add Request"
+    >
+        <content>
+            <VBox id="EditPopup" class="sapUiSmallMargin">
+                <f:SimpleForm
+                    id="SimpleFormChange354"
+                    editable="true"
+                    layout="ResponsiveGridLayout"
+                    title="Request Details"
+                    labelSpanXL="3"
+                    labelSpanL="3"
+                    labelSpanM="3"
+                    labelSpanS="12"
+                    adjustLabelSpan="false"
+                    emptySpanXL="4"
+                    emptySpanL="4"
+                    emptySpanM="4"
+                    emptySpanS="0"
+                    columnsXL="1"
+                    columnsL="1"
+                    columnsM="1"
+                    singleContainerFullSize="false"
+                    binding="{RequestModel}"
+                >
+                    <f:content>
+                        <Label text="Title" />
+                        <Input
+                            id="title"
+                            value="{RequestModel>/title}"
+                        />
+                        <Label text="Description" />
+                        <Input value="{RequestModel>/descr}" />
+                        
+                        <Label text="Priority" />
+                        <Select
+                            id="priority"
+                            selectedKey="{RequestModel>/prio}"
+                        >
+                            <items>
+                                <core:Item text="1" key="1" />
+                                <core:Item text="2" key="2" />
+                                <core:Item text="3" key="3" />
+                            </items>
+                        </Select>
+                        <Label text="Impact" />
+                        <Select
+                            id="impact"
+                            selectedKey="{RequestModel>/impact}"
+                        >
+                            <items>
+                                <core:Item text="High" key="1"    />
+                                <core:Item text="Medium" key="2" />
+                                <core:Item text="Low" key="3"
+                                />
+                            </items>
+                        </Select>
+                    </f:content>
+                </f:SimpleForm>
+
+                <HBox class="sapUiMediumTopBottom">
+                    <Button text="Save" type="Emphasized" press="saveRequest"></Button>
+                    <Button text="Cancel" press="cancelDialog"></Button>
+
+                </HBox>
+                    
+            </VBox>
+            
+        </content>
+    </Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,73 @@
+_schema-version: "3.1"
+ID: ServiceReqest
+description: A simple CAP project.
+version: 1.0.0
+modules:
+- name: ServiceReqest-srv
+  type: nodejs
+  path: gen/srv
+  provides:
+  - name: srv-api
+    properties:
+      srv-url: ${default-url}
+  parameters:
+    buildpack: nodejs_buildpack
+  build-parameters:
+    builder: npm-ci
+- name: ServiceReqest-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: ServiceReqest-repo-host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - comrequestmanagementrequestmanagement.zip
+      name: comrequestmanagementrequestmanagement
+      target-path: resources/
+- name: comrequestmanagementrequestmanagement
+  type: html5
+  path: app/requestmanagement
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: ServiceReqest-repo-host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: ServiceReqest-html5-srv
+    service-plan: app-host
+- name: ServiceReqest-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: false
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: ServiceReqest-destination-service
+    service-plan: lite
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+  - builder: custom
+    commands:
+    - npx -p @sap/cds-dk cds build --production
