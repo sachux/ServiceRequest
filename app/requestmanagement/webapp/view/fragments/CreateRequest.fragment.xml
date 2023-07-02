@@ -5,13 +5,13 @@
 	xmlns:core="sap.ui.core"
 >
     <Dialog
-        id="helloDialog"
+        id="updateDialog"
         title="Add Request"
     >
         <content>
             <VBox id="EditPopup" class="sapUiSmallMargin">
-                <f:SimpleForm
-                    id="SimpleFormChange354"
+                 <f:SimpleForm
+                    id="createForm"
                     editable="true"
                     layout="ResponsiveGridLayout"
                     title="Request Details"
@@ -37,7 +37,7 @@
                             value="{RequestModel>/title}"
                         />
                         <Label text="Description" />
-                        <Input value="{RequestModel>/descr}" />
+                        <Input id="desc" value="{RequestModel>/descr}" />
                         
                         <Label text="Priority" />
                         <Select
@@ -66,8 +66,8 @@
                 </f:SimpleForm>
 
                 <HBox class="sapUiMediumTopBottom">
-                    <Button text="Save" type="Emphasized" press="saveRequest"></Button>
-                    <Button text="Cancel" press="cancelDialog"></Button>
+                    <Button id="saveButton" text="Save" type="Emphasized" press="saveRequest" class="sapUiSmallMarginEnd"></Button>
+                    <Button id="cancelButton" text="Cancel" press="cancelDialog"></Button>
 
                 </HBox>
                     

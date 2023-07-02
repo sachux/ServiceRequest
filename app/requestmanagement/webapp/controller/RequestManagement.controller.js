@@ -16,11 +16,12 @@ sap.ui.define([
             createRequest : function(oEvent){
                 this.mode = 'CREATE'
                 this.onOpenDialog();
+            
                 this.getView().setModel(new JSONModel({
                     "title": "1231",
                     "descr": "",
                     "impact":1,
-                    "prio":1
+                    "prio":"1"
                 }), "RequestModel")
 
             },
@@ -39,24 +40,31 @@ sap.ui.define([
             },
 
             saveRequest : function(){
-                if(this.mode = 'CREATE'){
+
+                var fnSuccess = function () {
+                    this._setBusy(false);
+                    MessageToast.show(this._getText("changesSentMessage"));
+                    this._setUIChanges(false);
+                }.bind(this);
+    
+                var fnError = function (oError) {
+                    this._setBusy(false);
+                    this._setUIChanges(false);
+                    MessageBox.error(oError.message);
+                }.bind(this);
+
+                if(this.mode == 'CREATE'){
+                    
                     this.getView().byId('request_Table').getBinding("items").create(this.getView().getModel("RequestModel").getData());
+                    
                 }else{
-
-                    var fnSuccess = function () {
-                        this._setBusy(false);
-                        MessageToast.show(this._getText("changesSentMessage"));
-                        this._setUIChanges(false);
-                    }.bind(this);
-        
-                    var fnError = function (oError) {
-                        this._setBusy(false);
-                        this._setUIChanges(false);
-                        MessageBox.error(oError.message);
-                    }.bind(this);
-
-                    this.getView().getModel().submitBatch("").then(fnSuccess, fnError);
+                    const editedData = this.getView().getModel("RequestModel").getData();
+                    // const f = this.getView().byId('request_Table').getBinding("items");
+                    // this.editingObject = editedData.title;
+                    this.editingObject.setProperty('title',editedData.title)
+                    
                 }
+                this.getView().getModel().submitBatch("request_Update").then(fnSuccess, fnError);
                 this.cancelDialog();
             },
 
@@ -68,18 +76,31 @@ sap.ui.define([
 
             onEdit: function(oEvent){
                 const data = oEvent.getSource().getBindingContext().getObject() ;
-
+                this.onOpenDialog();
+                this.mode = 'EDIT';
                 this.getView().setModel(new JSONModel({
                     "title": data.title,
                     "descr": data.descr,
                     "impact":data.impact,
                     "prio":data.prio
                 }), "RequestModel");
-
-                this.mode = 'EDIT'
-
-                this.onOpenDialog();
+                this.editingObject = oEvent.getSource().getBindingContext();
             },
+
+            onDelete: function(oEvent){
+                const oContext = oEvent.getSource().getBindingContext();
+		        const title = oContext.getProperty("title");
+		        oContext.delete().then(function () {
+		            sap.m.MessageToast.show(`Entry ${title} deleted`);
+		        }.bind(this), function (oError) {
+		            this._setUIChanges();
+		            if (oError.canceled) {
+		                sap.m.MessageToast.show(this._getText("deletionRestoredMessage", sUserName));
+		                return;
+		            }
+		            MessageBox.error(oError.message + ": " + sUserName);
+		        }.bind(this));
+            }
 
             
         });

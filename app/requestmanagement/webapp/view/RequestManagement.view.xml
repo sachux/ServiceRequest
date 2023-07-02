@@ -13,13 +13,16 @@
 			path: '/Request',
 			sorter: {
 				path: 'title'
+			},
+			parameters: {
+				$$updateGroupId : 'request_Update'
 			}
 		}">
 		<headerToolbar>
 			<OverflowToolbar>
 				<content>
 				<ToolbarSpacer/>
-					<Button text="Add New Request" press="createRequest"></Button>
+					<Button id="addRequest" text="Add New Request" press="createRequest"></Button>
 				</content>
 			</OverflowToolbar>
 		</headerToolbar>
@@ -57,19 +60,20 @@
 					<ObjectIdentifier
 						title="{title}"
 						text="{title}"/>
-					<Text
+					<Text id="description"
 						text="{descr}" />
-					<Text
+					<Text  id="prio"
 						text="{prio}" />
 				
 					<ObjectNumber
+						
 							number="{
 								parts:[{path:'impact'}]
 							}"
 							 />
 					<HBox>
-					<Link text="Edit" press="onEdit" ></Link>
-					<Link text="Delete" press="OnDelete" ></Link>
+					<Link id="editLink" text="Edit" press="onEdit" class="sapUiTinyMargin" ></Link>
+					<Link id="deleteLink"  text="Delete" press="onDelete" class="sapUiTinyMargin" ></Link>
 					</HBox>
 					
 				</cells>
