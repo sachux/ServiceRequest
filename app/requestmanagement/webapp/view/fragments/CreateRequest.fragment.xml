@@ -42,12 +42,13 @@
                         <Label text="Priority" />
                         <Select
                             id="priority"
-                            selectedKey="{RequestModel>/prio}"
+                            selectedKey="{RequestModel>/priority}"
                         >
                             <items>
-                                <core:Item text="1" key="1" />
-                                <core:Item text="2" key="2" />
-                                <core:Item text="3" key="3" />
+                                <core:Item text="High" key="High"    />
+                                <core:Item text="Medium" key="Medium" />
+                                <core:Item text="Low" key="Low"
+                                />
                             </items>
                         </Select>
                         <Label text="Impact" />
@@ -55,12 +56,12 @@
                             id="impact"
                             selectedKey="{RequestModel>/impact}"
                         >
-                            <items>
-                                <core:Item text="High" key="1"    />
-                                <core:Item text="Medium" key="2" />
-                                <core:Item text="Low" key="3"
-                                />
+                         <items>
+                                <core:Item text="1" key="1" />
+                                <core:Item text="2" key="2" />
+                                <core:Item text="3" key="3" />
                             </items>
+                            
                         </Select>
                     </f:content>
                 </f:SimpleForm>

@@ -1,2 +1,6 @@
-title,prio,descr,category_ID,impact,criticality
-Test Request,High,Description,,1,2
+title,priority,descr,category_ID,impact,criticality
+Noisy Washing Machine,High,Washing machine is extremly noisy during the spin cycle,,1,2
+Clothes Are Getting Ripped,High,clothes getting damaged during a washing cycle,,3,2
+Slow Draining,High,Washing machine suddenly starts to drain slowly and finding left over water in the machine cycle,,1,2
+Washing Machine Won’t Spin,Medium,Washing machine refusing to spin,,2,2
+Washing Machine is Leaking,High,Looks like washers or seals may be worn out,,1,2

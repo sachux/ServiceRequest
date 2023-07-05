@@ -5,7 +5,7 @@ using {managed} from '@sap/cds/common';
 entity Request : managed{
 key ID      : UUID  @(Core.Computed : true);
     title       : String(100);
-    prio        : String(5);
+    priority        : String(5);
     descr       : String;
     category  : Association to Category;
     impact      : Integer;

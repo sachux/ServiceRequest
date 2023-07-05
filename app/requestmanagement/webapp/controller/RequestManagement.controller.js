@@ -1,11 +1,12 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
-    "sap/ui/model/json/JSONModel"
+    "sap/ui/model/json/JSONModel",
+    "sap/m/MessageToast"
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, JSONModel) {
+    function (Controller, JSONModel, MessageToast) {
         "use strict";
 
         return Controller.extend("com.requestmanagement.requestmanagement.controller.RequestManagement", {
@@ -18,10 +19,10 @@ sap.ui.define([
                 this.onOpenDialog();
             
                 this.getView().setModel(new JSONModel({
-                    "title": "1231",
+                    "title": "",
                     "descr": "",
                     "impact":1,
-                    "prio":"1"
+                    "priority":"1"
                 }), "RequestModel")
 
             },
@@ -42,27 +43,26 @@ sap.ui.define([
             saveRequest : function(){
 
                 var fnSuccess = function () {
-                    this._setBusy(false);
-                    MessageToast.show(this._getText("changesSentMessage"));
-                    this._setUIChanges(false);
+                    MessageToast.show("Information Updated");
                 }.bind(this);
     
                 var fnError = function (oError) {
-                    this._setBusy(false);
-                    this._setUIChanges(false);
                     MessageBox.error(oError.message);
                 }.bind(this);
 
                 if(this.mode == 'CREATE'){
-                    
-                    this.getView().byId('request_Table').getBinding("items").create(this.getView().getModel("RequestModel").getData());
+                    const data = this.getView().getModel("RequestModel").getData();
+                    data.impact = parseInt(data.impact);
+                    this.getView().byId('request_Table').getBinding("items").create(data);
                     
                 }else{
                     const editedData = this.getView().getModel("RequestModel").getData();
-                    // const f = this.getView().byId('request_Table').getBinding("items");
-                    // this.editingObject = editedData.title;
-                    this.editingObject.setProperty('title',editedData.title)
                     
+                    this.editingObject.setProperty('title',editedData.title)
+                    this.editingObject.setProperty('descr',editedData.descr)
+                    this.editingObject.setProperty('impact',parseInt(editedData.impact))
+                    this.editingObject.setProperty('priority',editedData.priority)
+
                 }
                 this.getView().getModel().submitBatch("request_Update").then(fnSuccess, fnError);
                 this.cancelDialog();
@@ -82,7 +82,7 @@ sap.ui.define([
                     "title": data.title,
                     "descr": data.descr,
                     "impact":data.impact,
-                    "prio":data.prio
+                    "priority":data.priority
                 }), "RequestModel");
                 this.editingObject = oEvent.getSource().getBindingContext();
             },
@@ -91,14 +91,9 @@ sap.ui.define([
                 const oContext = oEvent.getSource().getBindingContext();
 		        const title = oContext.getProperty("title");
 		        oContext.delete().then(function () {
-		            sap.m.MessageToast.show(`Entry ${title} deleted`);
+		            MessageToast.show(`Entry ${title} deleted`);
 		        }.bind(this), function (oError) {
-		            this._setUIChanges();
-		            if (oError.canceled) {
-		                sap.m.MessageToast.show(this._getText("deletionRestoredMessage", sUserName));
-		                return;
-		            }
-		            MessageBox.error(oError.message + ": " + sUserName);
+		            MessageToast.error(oError.message + ": " + title);
 		        }.bind(this));
             }
 

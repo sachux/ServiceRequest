@@ -1,10 +1,48 @@
 <mvc:View controllerName="com.requestmanagement.requestmanagement.controller.RequestManagement"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
     xmlns:core="sap.ui.core"
+	xmlns:f="sap.f"
+	xmlns:fb="sap.ui.comp.filterbar"
     xmlns="sap.m">
     <Page id="page" title="{i18n>appTitle}">
         <content >
+		<fb:FilterBar id="filterbar" persistencyKey="myPersKey" useToolbar="false" search=".onSearch" filterChange=".onFilterChange" afterVariantLoad=".onAfterVariantLoad">
+							<fb:filterGroupItems>
+								<fb:FilterGroupItem name="Name" label="Title" groupName="Group1" visibleInFilterBar="true">
+									<fb:control>
+										<Input
+											name="Name"
+											selectionChange=".onSelectionChange"
+											
+										>
+										
+										</Input> 
+
+									</fb:control>
+								</fb:FilterGroupItem>
+								<fb:FilterGroupItem name="Category" label="Category" groupName="Group1" visibleInFilterBar="true">
+									<fb:control>
+										<MultiComboBox
+											name="Category"
+											selectionChange=".onSelectionChange"
+											
+										>
+												<items>
+											<!-- <core:Item text="" key=""    /> -->
+											<core:Item text="High" key="High"    />
+											<core:Item text="Medium" key="Medium" />
+											<core:Item text="Low" key="Low"/>
+											</items>
+										</MultiComboBox>
+									</fb:control>
+								</fb:FilterGroupItem>
+								
+							</fb:filterGroupItems>
+						</fb:FilterBar>
 		<VBox  class="sapUiMediumMargin">
+
+			
+
         <Table
 		
 		id="request_Table"
@@ -12,7 +50,8 @@
 		items="{
 			path: '/Request',
 			sorter: {
-				path: 'title'
+				path: 'createdAt',
+				descending: true
 			},
 			parameters: {
 				$$updateGroupId : 'request_Update'
@@ -29,22 +68,23 @@
 		
 		<columns>
 			<Column
-				width="12em">
+				width="25em">
 				<Text text="Title" />
 			</Column>
 			<Column
-				minScreenWidth="Tablet"
+				
 				demandPopin="true">
 				<Text text="Description" />
 			</Column>
 			<Column
-				minScreenWidth="Desktop"
+				width="8em"
 				demandPopin="true"
 				hAlign="Begin		">
 				<Text text="Priority" />
 			</Column>
 
 			<Column
+			width="8em"
 				hAlign="Begin">
 				<Text text="Impact" />
 			</Column>
@@ -63,7 +103,7 @@
 					<Text id="description"
 						text="{descr}" />
 					<Text  id="prio"
-						text="{prio}" />
+						text="{priority}" />
 				
 					<ObjectNumber
 						
