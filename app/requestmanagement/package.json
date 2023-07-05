@@ -10,13 +10,29 @@
     "main": "webapp/index.html",
     "scripts": {
         "deploy-config": "npx -p @sap/ux-ui5-tooling fiori add deploy-config cf",
-        "build:cf": "ui5 build preload --clean-dest --config ui5-deploy.yaml --include-task=generateCachebusterInfo"
+        "build:cf": "ui5 build preload --clean-dest --config ui5-deploy.yaml --include-task=generateCachebusterInfo",
+        "wdi5": "wdio run ./wdio.conf.js"
     },
     "devDependencies": {
         "@sap/ui5-builder-webide-extension": "^1.1.8",
-        "ui5-task-zipper": "^0.5.0",
+        "@ui5/cli": "^2.14.10",
+        "@wdio/cli": "^7.32.0",
+        "@wdio/local-runner": "^7.32.0",
+        "@wdio/mocha-framework": "^7.30.2",
+        "@wdio/spec-reporter": "^7.31.1",
+        "chromedriver": "^114.0.2",
         "mbt": "^1.2.18",
-        "@ui5/cli": "^2.14.10"
+        "ui5-task-zipper": "^0.5.0",
+        "wdio-chromedriver-service": "^7.2.8",
+        "wdio-ui5-service": "^1.5.1",
+
+        "wdio-geckodriver-service": "4.1.1",
+        "geckodriver": "^3.2.0",
+
+
+        "@sap/ux-ui5-tooling": "^1.7.4",
+        "@ui5/fs": "^2.0.6",
+        "@ui5/logger": "^2.0.1"
     },
     "ui5": {
         "dependencies": [
